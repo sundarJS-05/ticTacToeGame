@@ -16,24 +16,17 @@ let checkWin = ()=>{
 
     let wins = [
 
-        [0,1,2],
-        [3,4,5],
-        [6,7,8],
-        [0,3,6],
-        [1,4,7],
-        [2,5,8],
-        [0,4,8],
-        [2,4,6]
+        [0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7], [2,5,8],[0,4,8],[2,4,6]
 
     ]
 
-    wins.forEach( (x)=>{
-        if( (boxtexts[x[0]].innerText==boxtexts[x[1]].innerText)
-        && (boxtexts[x[1]].innerText==boxtexts[x[2]].innerText)
-        && (boxtexts[x[0]].innerText!='') ){
+    wins.forEach( (win)=>{
+        if( (boxtexts[win[0]].innerText==boxtexts[win[1]].innerText)
+        && (boxtexts[win[1]].innerText==boxtexts[win[2]].innerText)
+        && (boxtexts[win[0]].innerText!='') ){
 
             gameOver=true
-            document.querySelector('.info').innerText = `${boxtexts[x[0]]} won`
+            document.querySelector('.info').innerText = boxtexts[win[0]].innerText + 'won'
 
         }
        }
@@ -41,23 +34,27 @@ let checkWin = ()=>{
 
 }
 
+
 // Game logic
 
 // select all boxes
 let boxes = document.querySelectorAll('.box')
 
 // convert selected boxes to Array
-let boxArray = Array.from(boxes)
+let boxArray = Array.from(boxes) 
 
-boxArray.forEach( (element)=>{
-    let boxText = element.querySelector('.boxtext')
+boxArray.forEach( (box)=>{
+    let boxText = box.querySelector('.boxtext')
 
-    element.addEventListener( 'click', (event)=>{
+    // add click event listener to each box
+    box.addEventListener( 'click', ()=>{
 
+        // if box is blank; give turn to X; then change turn
         if(boxText.innerText==''){
             boxText.innerText=turn
             turn=changeTurn()
 
+            // check if X or 0 won
             checkWin()
 
             if(!gameOver){
@@ -68,20 +65,21 @@ boxArray.forEach( (element)=>{
     })
 })
 
-// adding onclick listener to reset button
 
+// adding onclick listener to reset button
 let reset = document.querySelector('#reset')
 
 reset.addEventListener('click', ()=>{
     let boxtexts = document.querySelectorAll('.boxtext')
     let boxArray = Array.from(boxtexts)
 
-    boxArray.forEach( (elem)=>{
-        elem.innerText=''
+    boxArray.forEach( (bText)=>{
+        bText.innerText=''
 
     })
 
     turn='X'
+    gameOver=false
     document.querySelector('.info').innerText=`Turn for ${turn}`
 
 
